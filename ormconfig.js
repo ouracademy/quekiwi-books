@@ -6,5 +6,9 @@ module.exports = {
   password: 'zDBGL6FI0dfzYRVzIQQc7wjPOlez4mvE',
   database: 'qmpoukcp',
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  synchronize: true
+  synchronize: true,
+  migrations: ['migrations/*{.ts,.js}'],
+  cli: {
+    migrationsDir: 'migrations'
+  }
 };
