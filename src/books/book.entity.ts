@@ -12,13 +12,13 @@ export class Book {
   id: number;
   @Column()
   title: string;
-  @Column()
+  @Column({ nullable: true })
   subtitle: string;
-  @Column('int')
+  @Column({ type: 'int', nullable: true })
   numberOfPages: number;
   // subjects
   // publishers,
-  @Column('date')
+  @Column({ type: 'date', nullable: true })
   publishDate: Date;
   // cover: Cover
   // languages
