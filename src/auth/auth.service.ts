@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload';
+import { CreateUserInput } from 'src/users/create-user-input';
 
 export interface Credentials {
   email: string;
@@ -24,5 +25,13 @@ export class AuthService {
 
   async validateUser(payload: JwtPayload): Promise<any> {
     return await this.usersService.findById(payload.id);
+  }
+
+  async signup(input: CreateUserInput) {
+    const user = await this.usersService.create(input);
+    return this.createToken({
+      email: user.email,
+      password: input.password
+    });
   }
 }
