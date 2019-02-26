@@ -1,10 +1,5 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
-import { UsersService } from './users.service';
-
-export interface CreateUserInput {
-  email: string;
-  password: string;
-}
+import { Controller, Post, Body } from '@nestjs/common';
+import { UsersService, CreateUserInput } from './users.service';
 
 @Controller('users')
 export class UsersController {
@@ -12,6 +7,6 @@ export class UsersController {
 
   @Post()
   create(@Body() input: CreateUserInput) {
-    return this.users.create(input.email, input.password);
+    return this.users.create(input);
   }
 }
