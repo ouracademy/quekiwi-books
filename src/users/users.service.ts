@@ -25,4 +25,7 @@ export class UsersService {
   findById(id: number) {
     return this.users.findOne(id);
   }
+  create(email, password) {
+    return this.users.save(new User(email, password));
+  }
 }
