@@ -43,26 +43,11 @@ export class UsersService {
   }
 
   async create(input: CreateUserInput) {
-    if (await this.users.findOne({ email: input.email })) {
-      throw new AlreadyExistException('email');
-    }
-
     const user = new User();
     user.name = input.name;
     user.email = input.email;
     user.password = await hash(input.password);
 
-    return this.users.save(user).catch(error => {
-      if (
-        error.message.startsWith(
-          'duplicate key value violates unique constraint'
-        )
-      ) {
-        const [key, value] = error.detail.match(/(?<=\().+?(?=\))/g);
-        throw new BadRequestException(`El ${key} ${value} ya existe`);
-      } else {
-        throw new Error('A error');
-      }
-    });
+    return this.users.save(user);
   }
 }

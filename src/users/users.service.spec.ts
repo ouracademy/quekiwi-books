@@ -2,18 +2,10 @@ import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { isHashGenerated } from '../helpers/hash';
 import { Repository } from 'typeorm';
-import { AlreadyExistException } from './already-exist.exception';
 
 const mockRepository = {
   save(user: User) {
     return Promise.resolve(user);
-  },
-  async findOne({ email }) {
-    return email === 'qpdiam@gmail.com'
-      ? {
-          email: 'qpdiam@gmail.com'
-        }
-      : null;
   }
 };
 
@@ -41,19 +33,6 @@ describe('UsersService', () => {
 
     const isEqual = await isHashGenerated('123456', user.password);
     expect(isEqual).toBe(true);
-  });
-
-  it(`create user with email already registered`, () => {
-    expect.assertions(1);
-    return service
-      .create({
-        name: 'diana',
-        email: 'qpdiam@gmail.com',
-        password: 'aPassword'
-      })
-      .catch(error => {
-        expect(error).toEqual(new AlreadyExistException('email'));
-      });
   });
 });
 
