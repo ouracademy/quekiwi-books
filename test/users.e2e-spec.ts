@@ -2,14 +2,15 @@ import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 
 import { INestApplication } from '@nestjs/common';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../src/users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 describe('Users', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      imports: [UsersModule]
+      imports: [TypeOrmModule.forRoot(), UsersModule]
     }).compile();
 
     app = module.createNestApplication();
@@ -19,7 +20,7 @@ describe('Users', () => {
   it(`/POST create user`, () => {
     return request(app.getHttpServer())
       .post('/users')
-      .send({ email: 'nuevo@gmail.com', password: '123456' })
+      .send({ email: 'nuevo@gmail.com', name: 'nuevo', password: '123456' })
       .expect(201)
       .then(response => {
         const { email } = response.body;
@@ -30,11 +31,21 @@ describe('Users', () => {
   it(`/POST create user with email already registered`, () => {
     return request(app.getHttpServer())
       .post('/users')
-      .send({ email: 'nuevo@gmail.com', password: '123456' })
+      .send({ email: 'nuevo@gmail.com', name: 'nuevo', password: '123456' })
       .expect(409, {
         statusCode: 409,
         error: 'Conflict',
         message: 'The email already exists'
+      });
+  });
+  it(`/POST create user with invalid email `, () => {
+    return request(app.getHttpServer())
+      .post('/users')
+      .send({ email: 'nuevo', name: 'nuevo', password: '123456' })
+      .expect(422, {
+        statusCode: 422,
+        error: 'Unprocessable Entity',
+        message: 'The email is invalid'
       });
   });
 

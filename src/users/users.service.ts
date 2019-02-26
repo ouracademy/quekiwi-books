@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException
+} from '@nestjs/common';
+import { validate } from 'class-validator';
+
 import { Credentials } from 'src/auth/auth.service';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,11 +38,15 @@ export class UsersService {
     return this.users.findOne(id);
   }
 
-  create(input: CreateUserInput) {
+  async create(input: CreateUserInput) {
     const user = new User();
     user.name = input.name;
     user.email = input.email;
     user.password = input.password;
+    const errors = await validate(user);
+    if (errors.length) {
+      throw new UnprocessableEntityException(errors);
+    }
     return this.users.save(user);
   }
 }
