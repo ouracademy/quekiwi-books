@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException
-} from '@nestjs/common';
-import { validate } from 'class-validator';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Credentials } from 'src/auth/auth.service';
 import { User } from './user.entity';
@@ -38,11 +33,7 @@ export class UsersService {
     user.name = input.name;
     user.email = input.email;
     user.password = input.password;
-    const errors = await validate(user);
-    if (errors.length > 0) {
-      console.log({ errors });
-      throw new UnprocessableEntityException(errors);
-    }
-    return await this.users.save(user);
+
+    return this.users.save(user);
   }
 }

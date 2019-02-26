@@ -38,3 +38,29 @@ describe('UsersService', () => {
     done();
   });
 });
+
+// TODO: unique
+// describe('Users', () => {
+//   let app: INestApplication;
+
+//   it(`/POST create user with email already registered`, () => {
+//     return request(app.getHttpServer())
+//       .post('/users')
+//       .send({ email: 'nuevo@gmail.com', name: 'nuevo', password: '123456' })
+//       .expect(409, {
+//         statusCode: 409,
+//         error: 'Conflict',
+//         message: 'The email already exists'
+//       });
+//   });
+// TODO: move to API testing (can't be done here sad :( )
+// it(`/POST incomplete fields for create user`, () => {
+//   return request(app.getHttpServer())
+//     .post('/users')
+//     .send({ email: 'qpdian@gmail.com' })
+//     .expect(400, {
+//       statusCode: 400,
+//       error: 'Bad request',
+//       message: 'The fields are incompletes'
+//     });
+// });
