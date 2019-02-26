@@ -4,6 +4,12 @@ import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+export interface CreateUserInput {
+  name: string;
+  email: string;
+  password: string;
+}
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -25,7 +31,12 @@ export class UsersService {
   findById(id: number) {
     return this.users.findOne(id);
   }
-  create(email, password) {
-    return this.users.save(new User(email, password));
+
+  create(input: CreateUserInput) {
+    const user = new User();
+    user.name = input.name;
+    user.email = input.email;
+    user.password = input.password;
+    return this.users.save(user);
   }
 }

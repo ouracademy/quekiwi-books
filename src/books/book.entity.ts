@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 // interface Cover {
 //   small?: string;
@@ -8,17 +8,17 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Book {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number;
   @Column()
   title: string;
-  @Column({ nullable: true })
+  @Column()
   subtitle: string;
-  @Column({ type: 'int', nullable: true })
+  @Column()
   numberOfPages: number;
   // subjects
   // publishers,
-  @Column({ type: 'date', nullable: true })
+  @Column()
   publishDate: Date;
   // cover: Cover
   // languages
