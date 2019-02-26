@@ -5,7 +5,7 @@ import { INestApplication, NotFoundException } from '@nestjs/common';
 import { UsersService } from '../src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { Credentials, AuthService } from '../src/auth/auth.service';
-import { JwtPayload } from '../src/auth/interfaces/jwt-payload.interface';
+import { JwtPayload } from '../src/auth/jwt-payload';
 
 describe('Auth', () => {
   let app: INestApplication;
