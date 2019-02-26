@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './create-user-input';
 import { hash, isHashGenerated } from '../helpers/hash';
+import { AlreadyExistException } from './already-exist.exception';
 
 @Injectable()
 export class UsersService {
@@ -38,6 +39,10 @@ export class UsersService {
   }
 
   async create(input: CreateUserInput) {
+    if (await this.users.findOne({ email: input.email })) {
+      throw new AlreadyExistException('email');
+    }
+
     const user = new User();
     user.name = input.name;
     user.email = input.email;
