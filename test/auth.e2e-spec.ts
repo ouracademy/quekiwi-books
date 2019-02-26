@@ -1,24 +1,25 @@
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { AuthModule } from '../src/auth/auth.module';
-import { INestApplication, NotFoundException } from '@nestjs/common';
-import { UsersService } from '../src/users/users.service';
+import { INestApplication } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Credentials, AuthService } from '../src/auth/auth.service';
+import { AuthService } from '../src/auth/auth.service';
 import { JwtPayload } from '../src/auth/jwt-payload';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { User } from '../src/users/user.entity';
 
 describe('Auth', () => {
   let app: INestApplication;
-  const userTest = { email: 'qpdiam@gmail.com', id: '1' };
+  const userTest = { email: 'qpdiam@gmail.com', id: 1 };
   const userService = {
-    login: (credentials: Credentials) => {
-      if (userTest.email !== credentials.email) {
-        throw new NotFoundException('User not found');
+    findOne(arg) {
+      if (typeof arg === 'object') {
+        if (userTest.email === arg.where.email) {
+          return userTest;
+        }
       }
-      return userTest;
-    },
 
-    findById: id => {
+      const id = +arg;
       return userTest.id === id ? userTest : null;
     }
   };
@@ -27,7 +28,7 @@ describe('Auth', () => {
     const module = await Test.createTestingModule({
       imports: [AuthModule]
     })
-      .overrideProvider(UsersService)
+      .overrideProvider(getRepositoryToken(User))
       .useValue(userService)
       .compile();
 
@@ -46,7 +47,7 @@ describe('Auth', () => {
         expect(response.body).toHaveProperty('token');
         const token = response.body.token;
         const payload = jwtService.decode(token) as JwtPayload;
-        expect(payload.id).toBe('1');
+        expect(payload.id).toBe(1);
       });
   });
 
