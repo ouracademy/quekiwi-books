@@ -1,5 +1,5 @@
 import { Length, IsEmail, IsString, MaxLength } from 'class-validator';
-import { IsUnique } from './is-unique';
+import { IsUnique } from '../is-unique';
 import { User } from './user.entity';
 
 export class CreateUserInput {

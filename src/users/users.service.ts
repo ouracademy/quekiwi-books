@@ -10,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './create-user-input';
 import { hash, isHashGenerated } from '../helpers/hash';
-import { AlreadyExistException } from './already-exist.exception';
 
 @Injectable()
 export class UsersService {

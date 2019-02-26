@@ -3,11 +3,10 @@ import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
-import { IsUniqueConstraint } from './is-unique';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  providers: [UsersService, IsUniqueConstraint],
+  providers: [UsersService],
   controllers: [UsersController],
   exports: [UsersService]
 })
