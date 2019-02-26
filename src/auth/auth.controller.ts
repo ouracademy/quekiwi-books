@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService, Credentials } from './auth.service';
+import { CreateUserInput } from '../users/create-user-input';
 
 @Controller('auth')
 export class AuthController {
@@ -17,6 +18,12 @@ export class AuthController {
   @HttpCode(200)
   async createToken(@Body() credentials: Credentials): Promise<any> {
     return await this.authService.createToken(credentials);
+  }
+
+  @Post('signup')
+  @HttpCode(200)
+  async signup(@Body() input: CreateUserInput): Promise<any> {
+    return this.authService.signup(input);
   }
 
   @Get('data')

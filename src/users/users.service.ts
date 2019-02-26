@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException
+} from '@nestjs/common';
 
 import { Credentials } from 'src/auth/auth.service';
 import { User } from './user.entity';
@@ -48,6 +52,17 @@ export class UsersService {
     user.email = input.email;
     user.password = await hash(input.password);
 
-    return await this.users.save(user);
+    return this.users.save(user).catch(error => {
+      if (
+        error.message.startsWith(
+          'duplicate key value violates unique constraint'
+        )
+      ) {
+        const [key, value] = error.detail.match(/(?<=\().+?(?=\))/g);
+        throw new BadRequestException(`El ${key} ${value} ya existe`);
+      } else {
+        throw new Error('A error');
+      }
+    });
   }
 }
