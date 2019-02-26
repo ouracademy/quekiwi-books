@@ -9,13 +9,8 @@ import { Credentials } from 'src/auth/auth.service';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateUserInput } from './create-user-input';
 import { hash } from '../helpers/hash';
-
-export interface CreateUserInput {
-  name: string;
-  email: string;
-  password: string;
-}
 
 @Injectable()
 export class UsersService {
@@ -45,9 +40,10 @@ export class UsersService {
     user.email = input.email;
     user.password = hash(input.password);
     const errors = await validate(user);
-    if (errors.length) {
+    if (errors.length > 0) {
+      console.log({ errors });
       throw new UnprocessableEntityException(errors);
     }
-    return this.users.save(user);
+    return await this.users.save(user);
   }
 }
