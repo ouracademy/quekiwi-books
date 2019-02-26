@@ -9,6 +9,7 @@ import { Credentials } from 'src/auth/auth.service';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { hash } from '../helpers/hash';
 
 export interface CreateUserInput {
   name: string;
@@ -25,7 +26,7 @@ export class UsersService {
 
   login(credentials: Credentials) {
     const user = this.users.findOne({
-      where: { email: credentials.email, password: credentials.password }
+      where: { email: credentials.email, password: hash(credentials.password) }
     });
 
     if (!user) {
@@ -42,7 +43,7 @@ export class UsersService {
     const user = new User();
     user.name = input.name;
     user.email = input.email;
-    user.password = input.password;
+    user.password = hash(input.password);
     const errors = await validate(user);
     if (errors.length) {
       throw new UnprocessableEntityException(errors);
