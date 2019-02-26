@@ -1,33 +1,24 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { hash, isHashGenerated } from '../helpers/hash';
+import { isHashGenerated } from '../helpers/hash';
+import { Repository } from 'typeorm';
+import { AlreadyExistException } from './already-exist.exception';
+
+const mockRepository = {
+  save(user: User) {
+    return Promise.resolve(user);
+  },
+  async findOne({ email }) {
+    return email === 'qpdiam@gmail.com'
+      ? {
+          email: 'qpdiam@gmail.com'
+        }
+      : null;
+  }
+};
 
 describe('UsersService', () => {
-  let service: UsersService;
-  const mockRepository = {
-    save: (user: User) => {
-      return Promise.resolve(user);
-    }
-  };
-
-  beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UsersService,
-        {
-          provide: getRepositoryToken(User),
-          useValue: mockRepository
-        }
-      ]
-    }).compile();
-    service = module.get<UsersService>(UsersService);
-  });
-
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  const service = new UsersService(mockRepository as Repository<User>);
 
   it('should create user', async () => {
     expect.assertions(1);
@@ -38,6 +29,7 @@ describe('UsersService', () => {
     });
     expect(user.email).toBe('arthur@gmail.com');
   });
+
   it('should create user with hash password ', async () => {
     expect.assertions(1);
 
@@ -50,22 +42,21 @@ describe('UsersService', () => {
     const isEqual = await isHashGenerated('123456', user.password);
     expect(isEqual).toBe(true);
   });
+
+  it(`create user with email already registered`, () => {
+    expect.assertions(1);
+    return service
+      .create({
+        name: 'diana',
+        email: 'qpdiam@gmail.com',
+        password: 'aPassword'
+      })
+      .catch(error => {
+        expect(error).toEqual(new AlreadyExistException('email'));
+      });
+  });
 });
 
-// TODO: unique
-// describe('Users', () => {
-//   let app: INestApplication;
-
-//   it(`/POST create user with email already registered`, () => {
-//     return request(app.getHttpServer())
-//       .post('/users')
-//       .send({ email: 'nuevo@gmail.com', name: 'nuevo', password: '123456' })
-//       .expect(409, {
-//         statusCode: 409,
-//         error: 'Conflict',
-//         message: 'The email already exists'
-//       });
-//   });
 // TODO: move to API testing (can't be done here sad :( )
 // it(`/POST incomplete fields for create user`, () => {
 //   return request(app.getHttpServer())
