@@ -8,6 +8,7 @@ import { JwtPayload } from '../src/auth/jwt-payload';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../src/users/user.entity';
 import { hash } from '../src/helpers/hash';
+import { useContainer } from 'class-validator';
 
 describe('Auth', () => {
   let app: INestApplication;
@@ -43,6 +44,8 @@ describe('Auth', () => {
 
     app = module.createNestApplication();
     await app.init();
+
+    useContainer(app, { fallbackOnErrors: true });
   });
 
   it(`/POST success login`, () => {

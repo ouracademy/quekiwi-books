@@ -1,7 +1,22 @@
 import { CreateUserInput } from './create-user-input';
-import { validate } from 'class-validator';
+import { validate, useContainer } from 'class-validator';
+import { Test } from '@nestjs/testing';
+import { AppModule } from '../app.module';
+import { INestApplication } from '@nestjs/common';
 
 describe('CreateUserInput', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    const module = await Test.createTestingModule({
+      imports: [AppModule]
+    }).compile();
+
+    app = module.createNestApplication();
+    await app.init();
+    useContainer(app, { fallbackOnErrors: true });
+  });
+
   it('must pass', () => {
     const input = new CreateUserInput();
     input.email = 'arthur@our-academy.org';
@@ -24,6 +39,22 @@ describe('CreateUserInput', () => {
         { rule: 'length', property: 'password' }
       ]);
     });
+  });
+
+  // TODO: this user must exist always in the database
+  it('should fail on already existing email', () => {
+    const input = new CreateUserInput();
+    input.email = 'amd11dot4@gmail.com';
+    return validate(input).then(errors => {
+      expect(getRuleProperty(errors)).toContainEqual({
+        rule: 'isUnique',
+        property: 'email'
+      });
+    });
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });
 
