@@ -7,29 +7,38 @@ import { AuthService } from '../src/auth/auth.service';
 import { JwtPayload } from '../src/auth/jwt-payload';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../src/users/user.entity';
+import { hash } from '../src/helpers/hash';
 
 describe('Auth', () => {
   let app: INestApplication;
-  const userTest = { email: 'qpdiam@gmail.com', id: 1 };
-  const userService = {
-    findOne(arg) {
-      if (typeof arg === 'object') {
-        if (userTest.email === arg.where.email) {
-          return userTest;
-        }
-      }
-
-      const id = +arg;
-      return userTest.id === id ? userTest : null;
-    }
-  };
+  let userTest;
+  let userRepository;
 
   beforeAll(async () => {
+    userTest = {
+      id: 1,
+      email: 'qpdiam@gmail.com',
+      password: await hash('123456')
+    };
+
+    userRepository = {
+      findOne(arg) {
+        if (typeof arg === 'object') {
+          if (userTest.email === arg.where.email) {
+            return userTest;
+          }
+        }
+
+        const id = +arg;
+        return userTest.id === id ? userTest : null;
+      }
+    };
+
     const module = await Test.createTestingModule({
       imports: [AuthModule]
     })
       .overrideProvider(getRepositoryToken(User))
-      .useValue(userService)
+      .useValue(userRepository)
       .compile();
 
     app = module.createNestApplication();
@@ -71,10 +80,13 @@ describe('Auth', () => {
 
   it(`/GET data with token authenticated`, () => {
     const authService = app.get(AuthService);
+
+    /// ay era el bug aca
+
     return authService
       .createToken({
-        email: userTest.email,
-        password: '12345'
+        email: 'qpdiam@gmail.com',
+        password: '123456'
       })
       .then(({ token }) =>
         request(app.getHttpServer())
@@ -85,6 +97,7 @@ describe('Auth', () => {
           })
       );
   });
+
   afterAll(async () => {
     await app.close();
   });

@@ -29,16 +29,18 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should create user', async done => {
+  it('should create user', async () => {
+    expect.assertions(1);
     const user = await service.create({
       name: 'arthur',
       email: 'arthur@gmail.com',
       password: '123456'
     });
     expect(user.email).toBe('arthur@gmail.com');
-    done();
   });
-  it('should create user with hash password ', async done => {
+  it('should create user with hash password ', async () => {
+    expect.assertions(1);
+
     const user = await service.create({
       name: 'arthur',
       email: 'arthur@gmail.com',
@@ -47,7 +49,6 @@ describe('UsersService', () => {
 
     const isEqual = await isHashGenerated('123456', user.password);
     expect(isEqual).toBe(true);
-    done();
   });
 });
 
