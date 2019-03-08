@@ -18,7 +18,7 @@ export class Book {
   numberOfPages: number;
   // subjects
   // publishers,
-  @Column()
+  @Column({ default: new Date() })
   publishDate: Date;
   // cover: Cover
   // languages
