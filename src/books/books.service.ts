@@ -22,10 +22,14 @@ export class BooksService {
   }
 
   private getBooksByTitle(title: string) {
-    return this.repository
-      .createQueryBuilder()
-      .where('LOWER(title) LIKE :title', { title: `%${title.toLowerCase()}%` })
-      .getMany();
+    return title
+      ? this.repository
+          .createQueryBuilder()
+          .where('LOWER(title) LIKE :title', {
+            title: `%${title.toLowerCase()}%`
+          })
+          .getMany()
+      : Promise.resolve([]);
   }
 
   async findByTitle(title: string): Promise<Book[]> {
