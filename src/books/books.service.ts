@@ -11,6 +11,10 @@ export class BooksService {
     private readonly repository: Repository<Book>
   ) {}
 
+  async getShortInfoOf(id) {
+    return await this.repository.findOne(id);
+  }
+
   async findAll(): Promise<Book[]> {
     return await this.repository.find();
   }
