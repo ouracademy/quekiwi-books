@@ -17,7 +17,7 @@ export class BooksController {
   }
   @Post('findBy')
   search(@Body() query) {
-    return this.books.findBy(query);
+    return this.books.findByTitle(query.title);
   }
 
   @Post()
