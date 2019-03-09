@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateUserBook } from './create-book-input';
 
@@ -9,6 +9,15 @@ export class BooksController {
   @Get()
   findAll() {
     return this.books.findAll();
+  }
+
+  @Get('autocomplete')
+  autocomplete(@Query() query: { title: any }) {
+    return this.books.autocompleteByTitle(query.title);
+  }
+  @Post('findBy')
+  search(@Body() query) {
+    return this.books.findBy(query);
   }
 
   @Post()
