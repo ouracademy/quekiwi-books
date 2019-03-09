@@ -21,7 +21,7 @@ export class BooksController {
     return this.books.autocompleteByTitle(query.title);
   }
 
-  @Post('/findBy')
+  @Get('/findBy')
   search(@Body() query) {
     return this.books.findByTitle(query.title);
   }
