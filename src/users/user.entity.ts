@@ -1,5 +1,5 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
-import { BookCopy } from 'src/books/copy.entity';
+import { BookCopy } from '../books/copy.entity';
 
 @Entity()
 export class User {

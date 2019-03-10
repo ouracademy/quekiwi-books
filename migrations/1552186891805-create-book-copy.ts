@@ -2,7 +2,6 @@ import {
   MigrationInterface,
   QueryRunner,
   Table,
-  TableColumn,
   TableForeignKey
 } from 'typeorm';
 
@@ -26,39 +25,33 @@ export class CreateBookCopy1552186891805 implements MigrationInterface {
             name: 'price',
             type: 'int',
             isNullable: true
+          },
+          {
+            name: 'userId',
+            type: 'int'
+          },
+          {
+            name: 'bookId',
+            type: 'int'
           }
         ]
       })
     );
-    await queryRunner.addColumn(
-      'user',
-      new TableColumn({
-        name: 'user',
-        type: 'int'
-      })
-    );
 
     await queryRunner.createForeignKey(
-      'user',
+      'book_copy',
       new TableForeignKey({
-        columnNames: ['user'],
+        columnNames: ['userId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'user',
         onDelete: 'CASCADE'
       })
     );
-    await queryRunner.addColumn(
-      'book',
-      new TableColumn({
-        name: 'user',
-        type: 'int'
-      })
-    );
 
     await queryRunner.createForeignKey(
-      'book',
+      'book_copy',
       new TableForeignKey({
-        columnNames: ['book'],
+        columnNames: ['bookId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'book',
         onDelete: 'CASCADE'
@@ -67,6 +60,6 @@ export class CreateBookCopy1552186891805 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
-    await queryRunner.dropTable('book-copy');
+    await queryRunner.dropTable('book_copy');
   }
 }
