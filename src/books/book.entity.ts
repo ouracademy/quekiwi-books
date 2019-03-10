@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { BookCopie } from './copie.entity';
+import { BookCopy } from './copy.entity';
 
 // interface Cover {
 //   small?: string;
@@ -24,6 +24,6 @@ export class Book {
   // cover: Cover
   // languages
   // authors
-  @OneToMany(type => BookCopie, copie => copie.book) // note: we will create author property in the Photo class below
-  copies: BookCopie[];
+  @OneToMany(type => BookCopy, copy => copy.book)
+  copies: BookCopy[];
 }

@@ -6,11 +6,11 @@ import {
   TableForeignKey
 } from 'typeorm';
 
-export class CreateBookCopie1552186891805 implements MigrationInterface {
+export class CreateBookCopy1552186891805 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.createTable(
       new Table({
-        name: 'book_copie',
+        name: 'book_copy',
         columns: [
           {
             name: 'id',
@@ -67,6 +67,6 @@ export class CreateBookCopie1552186891805 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
-    await queryRunner.dropTable('book-copie');
+    await queryRunner.dropTable('book-copy');
   }
 }
