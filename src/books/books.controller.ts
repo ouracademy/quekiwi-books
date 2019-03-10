@@ -25,12 +25,13 @@ export class BooksController {
     return this.books.findAll();
   }
 
-  @Get('autocomplete')
-  autocomplete(@Query() query: { title: any }) {
-    return this.books.autocompleteByTitle(query.title);
+  @Get('/short-info/:id')
+  get(@Param('id') id) {
+    return this.books.getShortInfoOf(id);
   }
-  @Post('findBy')
-  search(@Body() query) {
+
+  @Get('/short-info')
+  search(@Query() query: { title: any }) {
     return this.books.findByTitle(query.title);
   }
 
@@ -39,6 +40,11 @@ export class BooksController {
   addBookCopie(@Param('id') bookId, @User() user) {
     return this.books.addBookCopie(bookId, user);
   }
+  @Get('/autocomplete')
+  autocomplete(@Query() query: { title: any }) {
+    return this.books.autocompleteByTitle(query.title);
+  }
+
   @Post()
   create(@Body() input: CreateUserBook) {
     return this.books.create(input);

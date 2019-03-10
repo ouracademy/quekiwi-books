@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { BookCopie } from './copie.entity';
 
 // interface Cover {
@@ -9,7 +9,7 @@ import { BookCopie } from './copie.entity';
 
 @Entity()
 export class Book {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
   @Column()
   title: string;

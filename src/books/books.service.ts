@@ -14,14 +14,12 @@ export class BooksService {
     private readonly bookCopieRepository: Repository<BookCopie>
   ) {}
 
-  async findAll(): Promise<Book[]> {
-    return await this.repository.find();
+  async getShortInfoOf(id) {
+    return await this.repository.findOne(id);
   }
 
-  async autocompleteByTitle(title = ''): Promise<any[]> {
-    return this.getBooksByTitle(title).then(books =>
-      books.map(book => ({ name: book.title }))
-    );
+  async findAll(): Promise<Book[]> {
+    return await this.repository.find();
   }
 
   private getBooksByTitle(title: string) {
