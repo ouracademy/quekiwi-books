@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 // interface Cover {
 //   small?: string;
@@ -8,7 +8,7 @@ import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Book {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
   @Column()
   title: string;
