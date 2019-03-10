@@ -20,11 +20,6 @@ export const User = createParamDecorator((data, req) => {
 export class BooksController {
   constructor(private books: BooksService) {}
 
-  @Get()
-  findAll() {
-    return this.books.findAll();
-  }
-
   @Get('/short-info/:id')
   get(@Param('id') id) {
     return this.books.getShortInfoOf(id);
