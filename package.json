@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed": "ts-node -r tsconfig-paths/register fixtures/seed-books.ts",
     "migrations:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n",
-    "migrations:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
+    "migrations:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "migrations:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^5.4.0",
