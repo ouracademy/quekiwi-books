@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Book } from './book.entity';
 import { User } from '../users/user.entity';
 
 @Entity()
 export class BookCopy {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
   @Column()
   quantity: number;
