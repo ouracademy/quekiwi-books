@@ -23,7 +23,7 @@ export class CreateBookCopy1552186891805 implements MigrationInterface {
           },
           {
             name: 'price',
-            type: 'int',
+            type: 'numeric',
             isNullable: true
           },
           {
