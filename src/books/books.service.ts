@@ -57,6 +57,7 @@ export class BooksService {
     bookCopie.user = user;
     return this.bookCopyRepository.save(bookCopie);
   }
+
   async updateBookCopie(inputBookCopie) {
     const bookCopie = await this.bookCopyRepository.findOne({
       id: inputBookCopie.id

@@ -5,8 +5,7 @@ import {
   Param,
   createParamDecorator,
   Put,
-  Body,
-  Get
+  Body
 } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
@@ -17,15 +16,9 @@ export const User = createParamDecorator((data, req) => {
   return req.user;
 });
 
-@Controller('books/:id/copies')
-export class CopyController {
+@Controller('books-copies')
+export class BookCopiesController {
   constructor(private books: BooksService) {}
-
-  // TODO: remove this, just for testing purposes
-  @Get()
-  something(@Param('id') bookId) {
-    return { holas: bookId };
-  }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
