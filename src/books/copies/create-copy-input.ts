@@ -1,6 +1,6 @@
 import { IsDefined } from 'class-validator';
 
-export class CreateCopie {
+export class CreateCopyInput {
   @IsDefined()
   id: number;
   quantity: number;

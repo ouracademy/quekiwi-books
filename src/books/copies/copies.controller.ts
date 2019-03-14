@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
-import { CreateCopie } from '../create-copie-input';
+import { CreateCopyInput } from './create-copy-input';
 import { BooksService } from '../books.service';
 
 export const User = createParamDecorator((data, req) => {
@@ -28,7 +28,7 @@ export class BookCopiesController {
 
   @Put()
   @UseGuards(AuthGuard('jwt'))
-  updateBookCopie(@Body() input: CreateCopie) {
+  updateBookCopie(@Body() input: CreateCopyInput) {
     return this.books.updateBookCopie(input);
   }
 }
