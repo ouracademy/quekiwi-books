@@ -16,6 +16,7 @@ export const User = createParamDecorator((data, req) => {
 });
 
 export class CreateCopyInput {
+  features: string[];
   quantity: number;
   price: number;
   bookId: number;
@@ -33,7 +34,12 @@ export class BookCopiesController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   create(@Body() input: CreateCopyInput, @User() user) {
-    return this.books.addBookCopy(input, user);
+    return {
+      ...input,
+      features: [],
+      id: new Date().getTime()
+    };
+    //this.books.addBookCopy(input, user);
   }
 
   @Patch()
