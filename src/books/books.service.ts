@@ -4,6 +4,7 @@ import { Book } from './book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserBook } from './create-book-input';
 import { BookCopy } from './copies/copy.entity';
+import { CreateCopyInput, UpdateCopyInput } from './copies/copies.controller';
 
 @Injectable()
 export class BooksService {
@@ -47,27 +48,27 @@ export class BooksService {
     return this.repository.save(book);
   }
 
-  async addBookCopie(bookId, user) {
-    const book = await this.repository.findOne({ id: bookId });
-    if (!book) {
-      throw new NotFoundException('Book not found');
-    }
-    const bookCopie = new BookCopy();
-    bookCopie.book = book;
-    bookCopie.user = user;
-    return this.bookCopyRepository.save(bookCopie);
+  async addBookCopy(input: CreateCopyInput, user) {
+    const book = await this.repository.findOneOrFail({ id: input.bookId });
+
+    const bookCopy = new BookCopy();
+    bookCopy.price = input.price;
+    bookCopy.quantity = input.quantity;
+    bookCopy.book = book;
+    bookCopy.user = user;
+
+    return this.bookCopyRepository.save(bookCopy);
   }
 
-  async updateBookCopie(inputBookCopie) {
-    const bookCopie = await this.bookCopyRepository.findOne({
-      id: inputBookCopie.id
+  async updateBookCopy(input: UpdateCopyInput, user) {
+    const bookCopy = await this.bookCopyRepository.findOneOrFail({
+      id: input.id
     });
-    if (!bookCopie) {
-      throw new NotFoundException('Bookcopie not found');
-    }
-    bookCopie.price = inputBookCopie.price || bookCopie.price;
-    bookCopie.quantity = inputBookCopie.quantity || bookCopie.quantity;
-    return this.bookCopyRepository.save(bookCopie);
+
+    bookCopy.price = input.price || bookCopy.price;
+    bookCopy.quantity = input.quantity || bookCopy.quantity;
+
+    return this.bookCopyRepository.save(bookCopy);
   }
 
   async findBookCopies(userId): Promise<Book[]> {

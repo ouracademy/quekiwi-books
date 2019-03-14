@@ -2,33 +2,43 @@ import {
   Controller,
   Post,
   UseGuards,
-  Param,
   createParamDecorator,
-  Put,
-  Body
+  Body,
+  Patch
 } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
-import { CreateCopyInput } from './create-copy-input';
 import { BooksService } from '../books.service';
+import { IsDefined } from 'class-validator';
 
 export const User = createParamDecorator((data, req) => {
   return req.user;
 });
 
-@Controller('books-copies')
+export class CreateCopyInput {
+  quantity: number;
+  price: number;
+  bookId: number;
+}
+
+export class UpdateCopyInput extends CreateCopyInput {
+  @IsDefined()
+  id: number;
+}
+
+@Controller('book-copies')
 export class BookCopiesController {
   constructor(private books: BooksService) {}
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  addBookCopie(@Param('id') bookId, @User() user) {
-    return this.books.addBookCopie(bookId, user);
+  create(@Body() input: CreateCopyInput, @User() user) {
+    return this.books.addBookCopy(input, user);
   }
 
-  @Put()
+  @Patch()
   @UseGuards(AuthGuard('jwt'))
-  updateBookCopie(@Body() input: CreateCopyInput) {
-    return this.books.updateBookCopie(input);
+  update(@Body() input: UpdateCopyInput, @User() user) {
+    return this.books.updateBookCopy(input, user);
   }
 }
