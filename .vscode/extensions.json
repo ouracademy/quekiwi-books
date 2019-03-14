@@ -6,7 +6,7 @@
   "recommendations": [
     "streetsidesoftware.code-spell-checker",
     "esbenp.prettier-vscode",
-    "eg2.tslint",
+    "ms-vscode.vscode-typescript-tslint-plugin",
     "PeterJausovec.vscode-docker",
     "wix.vscode-import-cost",
     "wayou.vscode-todo-highlight",
