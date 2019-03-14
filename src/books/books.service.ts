@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { Book } from './book.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserBook } from './create-book-input';
-import { BookCopy } from './copy.entity';
+import { BookCopy } from './copies/copy.entity';
 
 @Injectable()
 export class BooksService {

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { BookCopy } from './copy.entity';
+import { BookCopy } from './copies/copy.entity';
 
 // interface Cover {
 //   small?: string;
