@@ -4,7 +4,9 @@ import {
   UseGuards,
   createParamDecorator,
   Body,
-  Patch
+  Patch,
+  Delete,
+  Param
 } from '@nestjs/common';
 
 import { AuthGuard } from '@nestjs/passport';
@@ -46,5 +48,11 @@ export class BookCopiesController {
   @UseGuards(AuthGuard('jwt'))
   update(@Body() input: UpdateCopyInput, @User() user) {
     return this.books.updateBookCopy(input, user);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  delete(@Param('id') id, @User() user) {
+    return { id: +id };
   }
 }
