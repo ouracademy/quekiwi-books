@@ -47,7 +47,8 @@ export class BookCopiesController {
   @Patch()
   @UseGuards(AuthGuard('jwt'))
   update(@Body() input: UpdateCopyInput, @User() user) {
-    return this.books.updateBookCopy(input, user);
+    return input;
+    //return this.books.updateBookCopy(input, user);
   }
 
   @Delete(':id')
