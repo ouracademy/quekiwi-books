@@ -25,4 +25,8 @@ export class BooksController {
   create(@Body() input: CreateUserBook) {
     return this.books.create(input);
   }
+  @Get()
+  findBooks() {
+    return this.books.findBooks();
+  }
 }

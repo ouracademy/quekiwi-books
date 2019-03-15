@@ -47,6 +47,9 @@ export class BooksService {
 
     return this.repository.save(book);
   }
+  async findBooks(): Promise<Book[]> {
+    return await this.repository.find();
+  }
 
   async addBookCopy(input: CreateCopyInput, user) {
     const book = await this.repository.findOneOrFail({ id: input.bookId });
