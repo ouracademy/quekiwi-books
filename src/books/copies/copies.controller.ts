@@ -30,11 +30,11 @@ export class UpdateCopyInput extends CreateCopyInput {
 }
 
 @Controller('book-copies')
+@UseGuards(AuthGuard('jwt'))
 export class BookCopiesController {
   constructor(private books: BooksService) {}
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
   create(@Body() input: CreateCopyInput, @User() user) {
     return {
       ...input,
@@ -45,14 +45,12 @@ export class BookCopiesController {
   }
 
   @Patch()
-  @UseGuards(AuthGuard('jwt'))
   update(@Body() input: UpdateCopyInput, @User() user) {
     return input;
     //return this.books.updateBookCopy(input, user);
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
   delete(@Param('id') id, @User() user) {
     return { id: +id };
   }
