@@ -12,16 +12,19 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { BooksService } from '../books.service';
 import { IsDefined } from 'class-validator';
+import { Type } from 'class-transformer';
+import { Feature } from '../feature.entity';
 
 export const User = createParamDecorator((data, req) => {
   return req.user;
 });
 
 export class CreateCopyInput {
-  features: string[];
   quantity: number;
   price: number;
   bookId: number;
+  @Type(() => Feature)
+  features: Feature[];
 }
 
 export class UpdateCopyInput extends CreateCopyInput {
@@ -38,7 +41,7 @@ export class BookCopiesController {
   create(@Body() input: CreateCopyInput, @User() user) {
     return {
       ...input,
-      features: [],
+      features: input.features,
       id: new Date().getTime()
     };
     //this.books.addBookCopy(input, user);
