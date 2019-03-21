@@ -39,12 +39,7 @@ export class BookCopiesController {
 
   @Post()
   create(@Body() input: CreateCopyInput, @User() user) {
-    return {
-      ...input,
-      features: input.features,
-      id: new Date().getTime()
-    };
-    //this.books.addBookCopy(input, user);
+    return this.books.addBookCopy(input, user);
   }
 
   @Patch()

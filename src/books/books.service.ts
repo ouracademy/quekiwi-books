@@ -59,6 +59,7 @@ export class BooksService {
     bookCopy.quantity = input.quantity;
     bookCopy.book = book;
     bookCopy.user = user;
+    bookCopy.features = input.features;
 
     return this.bookCopyRepository.save(bookCopy);
   }
