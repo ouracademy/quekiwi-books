@@ -6,6 +6,6 @@ export class Feature {
   id: number;
   @Column()
   name: string;
-  @Column({ nullable: true })
+  @Column()
   type: string;
 }
